@@ -1,0 +1,48 @@
+li {
+  list-style: none;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+}
+
+.photo-card {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.photo-card img {
+  width: 100%;
+}
+
+.info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.photo-card .info-item {
+  justify-self: center;
+}
+
+.gallery__link {
+  color: inherit;
+  text-decoration: none;
+}
+.gallery__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.gallery__link:hover {
+  cursor: zoom-in;
+  color: inherit;
+  text-decoration: none;
+}
+
+.btn.is-hidden {
+  display: none;
+}
