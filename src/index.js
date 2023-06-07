@@ -9,12 +9,14 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
+let allHits = '';
+
 const refs = {
   searchForm: document.querySelector('.search-form'),
   galleryContainer: document.querySelector('.gallery'),
   spinner: document.querySelector('.spinner-border'),
 };
-
+let imagesNumber = 0;
 const loadMoreBtn = new LoadMoreBtn({
   selector: '[data-action="load"]',
   hidden: true,
@@ -49,13 +51,18 @@ function onSearch(e) {
   picturesApiService.query = searchQuery;
 
   picturesApiService.fetchImages().then(response => {
+    console.log(response);
     const imageList = response.data.hits;
+
     if (imageList.length === 0) {
+      console.log(imagesNumber);
+      loadMoreBtn.hide();
+      clearContainer();
       return Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
     }
-    const allHits = response.data.totalHits;
+    allHits = response.data.totalHits;
 
     Notify.success(`Hooray! We found ${allHits} images.`);
 
@@ -65,6 +72,8 @@ function onSearch(e) {
       appendImageMarkup(image);
       loadMoreBtn.enable();
     });
+    imagesNumber += imageList.length;
+    console.log(imagesNumber);
 
     smoothImageLoader();
   });
@@ -74,6 +83,11 @@ function onLoadMore() {
   loadMoreBtn.disable();
   picturesApiService.fetchImages().then(response => {
     const imageList = response.data.hits;
+    imagesNumber += imageList.length;
+    console.log(imagesNumber);
+    if (imagesNumber >= allHits) {
+      loadMoreBtn.hide();
+    }
     imageList.forEach(image => {
       appendImageMarkup(image);
       loadMoreBtn.enable();
